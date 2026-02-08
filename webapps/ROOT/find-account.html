@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계정 정보 찾기</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
+</head>
+<body>
+    <div class="welcome-banner">
+        <img src="img/welcome.png" alt="Welcome" class="welcome-img">
+    </div>
+    
+    <div class="container">
+        <div class="auth-card">
+            <div class="logo">
+                <img src="img/robot.png" alt="Robot Logo" class="robot-logo">
+            </div>
+            
+            <div class="tabs">
+                <div class="tab-header">
+                    <button class="tab-btn active" data-tab="find-id">아이디 찾기</button>
+                    <button class="tab-btn" data-tab="find-pw">비밀번호 찾기</button>
+                </div>
+                
+                <div class="tab-slider">
+                    <div class="tab-slider-indicator"></div>
+                </div>
+                
+                <div class="tab-content active" id="find-id">
+                    <form id="findIdForm">
+                        <div class="form-group">
+                            <label for="find-id-email">Email</label>
+                            <div class="input-wrapper">
+                                <input type="email" id="find-id-email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="find-id-name">이름</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="find-id-name" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">아이디 찾기</button>
+                    </form>
+                    <div id="find-id-message" class="message"></div>
+                    
+                    <div class="form-footer">
+                        <a href="index.html" class="text-link">← 로그인 화면으로 돌아가기</a>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="find-pw">
+                    <form id="findPwForm">
+                        <div class="form-group">
+                            <label for="find-pw-email">Email</label>
+                            <div class="input-wrapper">
+                                <input type="email" id="find-pw-email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="find-pw-name">이름</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="find-pw-name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="find-pw-birthdate">생년월일</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="find-pw-birthdate" 
+                                       placeholder="YYYYMMDD" 
+                                       pattern="[0-9]{8}" maxlength="8" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">비밀번호 찾기</button>
+                    </form>
+                    <div id="find-pw-message" class="message"></div>
+                    
+                    <div class="form-footer">
+                        <a href="index.html" class="text-link">← 로그인 화면으로 돌아가기</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="balloon balloon-left"></div>
+            <div class="balloon balloon-right"></div>
+        </div>
+    </div>
+    <script src="js/find-script.js"></script>
+</body>
+</html>

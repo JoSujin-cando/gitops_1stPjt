@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인/회원가입</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
+</head>
+<body>
+    <div class="welcome-banner">
+        <img src="img/welcome.png" alt="Welcome" class="welcome-img">
+    </div>
+    
+    <div class="container">
+        <div class="auth-card">
+            <div class="logo">
+                <img src="img/robot.png" alt="Robot Logo" class="robot-logo">
+            </div>
+            
+            <div class="tabs">
+                <div class="tab-header">
+                    <button class="tab-btn active" data-tab="login">로그인</button>
+                    <button class="tab-btn" data-tab="register">회원가입</button>
+                </div>
+                
+                <div class="tab-slider">
+                    <div class="tab-slider-indicator"></div>
+                </div>
+                
+                <div class="tab-content active" id="login">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="login-username">아이디</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="login-username" name="username" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password">비밀번호</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="login-password" name="password" required>
+                            </div>
+                        </div>
+                        
+                        <div class="remember-me">
+                            <label class="checkbox">
+                                <input type="checkbox" id="stay-signed-in">
+                                <span class="checkbox-text">로그인 상태 유지</span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">로그인</button>
+                    </form>
+                    
+                    <div class="form-footer">
+                        <a href="find-account.html" class="text-link">아이디/비밀번호 찾기</a>
+                    </div>
+                    
+                    <div id="login-message" class="message"></div>
+                </div>
+                
+                <div class="tab-content" id="register">
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="register-email">Email</label>
+                            <div class="input-wrapper">
+                                <input type="email" id="register-email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-name">이름</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="register-name" name="name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-username">아이디</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="register-username" name="username" required>
+                            </div>
+                            <div id="username-check" class="input-hint"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-password">비밀번호 <span class="input-hint">(6자 이상)</span></label>
+                            <div class="input-wrapper">
+                                <input type="password" id="register-password" name="password" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-birthdate">생년월일</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="register-birthdate" name="birthdate"
+                                       placeholder="YYYYMMDD" 
+                                       pattern="[0-9]{8}" maxlength="8" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">회원가입</button>
+                    </form>
+                    <div id="register-message" class="message"></div>
+                </div>
+            </div>
+            
+            <div class="balloon balloon-left"></div>
+            <div class="balloon balloon-right"></div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>

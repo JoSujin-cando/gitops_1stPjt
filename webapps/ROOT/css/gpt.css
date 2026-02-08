@@ -1,0 +1,139 @@
+/* gpt.jsp 전용 스타일 */
+
+.gpt-container {
+    display: flex;
+    flex-direction: row; /* 좌우 2단 배치 */
+    gap: 20px;
+    width: 100%;
+    max-width: 1400px;
+    padding: 20px;
+    /* 헤더 높이(60px) + 패딩(20px)만큼 위에서 떨어짐 */
+    margin-top: 60px; 
+    height: calc(100vh - 80px); /* 헤더 제외한 나머지 높이 */
+}
+
+/* --- 1. 왼쪽: 질문 목록 --- */
+.history-list-container {
+    flex: 1; /* 1/3 비율 */
+    min-width: 300px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.history-list-container h3 {
+    font-family: 'Jua', sans-serif;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+.history-list-container .scrollable-list {
+    max-height: 100%;
+    border: none;
+    padding: 0 5px;
+}
+
+.history-item {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    border-radius: 6px;
+}
+.history-item:hover {
+    background-color: #f9f9f9;
+}
+.history-item.active {
+    background-color: #fff8e6;
+    font-weight: 600;
+}
+.history-item .question-preview {
+    /* (긴 질문은 ...으로 자르기) */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* --- 2. 오른쪽: 채팅방 --- */
+.chat-window-container {
+    flex: 3; /* 2/3 비율 */
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* 부모(gpt-container)의 높이를 꽉 채움 */
+}
+.chat-window-container h3 {
+    font-family: 'Jua', sans-serif;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.chat-window-container #chat-history {
+    max-height: 100%;
+    border-width: 1.5px;
+    margin-bottom: 10px;
+    flex-grow: 1; /* 채팅창이 남은 공간 모두 차지 */
+}
+
+/* (채팅 말풍선) */
+.chat-bubble {
+    padding: 10px 15px;
+    border-radius: 18px;
+    margin-bottom: 10px;
+    max-width: 80%;
+    white-space: pre-wrap; /* (줄바꿈/공백 인식) */
+    word-wrap: break-word; /* (긴 단어 자동 줄바꿈) */
+}
+.chat-bubble.user {
+    background-color: #007bff;
+    color: white;
+    margin-left: auto; /* (오른쪽 정렬) */
+    border-bottom-right-radius: 4px;
+}
+.chat-bubble.bot {
+    background-color: #f1f0f0;
+    color: #333;
+    margin-right: auto; /* (왼쪽 정렬) */
+    border-bottom-left-radius: 4px;
+}
+
+#gpt-loading {
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+    padding: 10px;
+}
+
+/* (질문 입력칸) */
+.gpt-input-area {
+    display: flex;
+    gap: 10px;
+    margin-top: auto; /* (항상 맨 아래에 고정) */
+    align-items: flex-end; /* (버튼과 textarea 하단 정렬) */
+}
+.gpt-input-area textarea {
+    flex-grow: 1;
+    border: 1.5px solid #e6eeff;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 15px;
+    resize: none; /* (사용자 크기 조절 방지) */
+    min-height: 40px; /* (기본 1줄 높이) */
+    max-height: 150px; /* (최대 5~6줄 높이) */
+    overflow-y: auto;
+}
+.gpt-input-area textarea:focus {
+    outline: none;
+    border-color: #FF6B6B;
+}
+.gpt-input-area button {
+    height: 40px; /* (textarea 기본 높이와 맞춤) */
+}
