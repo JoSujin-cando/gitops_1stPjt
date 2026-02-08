@@ -1,0 +1,74 @@
+# 빌더 스테이지
+FROM eclipse-temurin:11-jdk-alpine AS builder
+
+# 환경 변수 설정
+ENV TOMCAT_VERSION=9.0.71
+ENV CATALINA_HOME=/usr/local/tomcat
+
+# Tomcat 설치
+RUN apk add --no-cache curl bash && \
+    mkdir -p $CATALINA_HOME && \
+    curl -fsSL https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz | \
+    tar -xzf - -C /tmp && \
+    cp -r /tmp/apache-tomcat-${TOMCAT_VERSION}/* $CATALINA_HOME/ && \
+    rm -rf $CATALINA_HOME/webapps/docs \
+           $CATALINA_HOME/webapps/examples \
+           $CATALINA_HOME/webapps/host-manager \
+           $CATALINA_HOME/webapps/manager \
+           $CATALINA_HOME/webapps/ROOT && \
+    mkdir -p $CATALINA_HOME/webapps/ROOT && \
+    chmod +x $CATALINA_HOME/bin/*.sh && \
+    rm -rf /tmp/apache-tomcat-${TOMCAT_VERSION}
+
+# 웹 애플리케이션 파일 복사
+COPY webapps/ROOT/ $CATALINA_HOME/webapps/ROOT/
+
+# Java 소스 파일 복사 - war로 넣지 않은 경우
+COPY src/ /tmp/src/
+
+# Java 소스 컴파일 - war로 넣지 않은 경우
+RUN javac -encoding UTF-8 \
+    -d $CATALINA_HOME/webapps/ROOT/WEB-INF/classes \
+    -cp "$CATALINA_HOME/lib/servlet-api.jar:$CATALINA_HOME/webapps/ROOT/WEB-INF/lib/gson-2.10.1.jar:$CATALINA_HOME/webapps/ROOT/WEB-INF/lib/mysql-connector-j-8.3.0.jar" \
+    /tmp/src/com/example/servlet/*.java \
+    /tmp/src/com/example/util/*.java && \
+    rm -rf /tmp/src
+
+# jlink로 최소 JRE 생성 - 모든 필수 모듈 포함!
+RUN jlink \
+    --add-modules java.base,java.sql,java.naming,java.desktop,java.management,java.xml,java.instrument,java.logging,java.compiler,java.security.jgss,java.security.sasl,jdk.unsupported,jdk.crypto.ec,java.net.http \
+    --strip-debug \
+    --no-man-pages \
+    --no-header-files \
+    --compress=2 \
+    --output /opt/jre-minimal && \
+    echo "=== jlink JRE 크기 ===" && \
+    du -sh /opt/jre-minimal
+
+# 최종 이미지
+FROM alpine:3.18
+
+# 최소 런타임 설치
+RUN apk add --no-cache bash libc6-compat && \
+    rm -rf /var/cache/apk/*
+
+# 환경 변수 설정
+ENV CATALINA_HOME=/usr/local/tomcat
+ENV JAVA_HOME=/opt/jre
+ENV PATH=$CATALINA_HOME/bin:$JAVA_HOME/bin:$PATH
+ENV JAVA_OPTS="-Djava.awt.headless=true -XX:+UseContainerSupport -XX:MaxRAMPercentage=70.0 -Xmx256m"
+
+# jlink로 생성한 최소 JRE 복사
+COPY --from=builder /opt/jre-minimal /opt/jre
+
+# Tomcat 복사
+COPY --from=builder $CATALINA_HOME/ $CATALINA_HOME/
+
+# 작업 디렉토리 설정
+WORKDIR $CATALINA_HOME
+
+# 포트 설정
+EXPOSE 8080
+
+# 실행 명령
+CMD ["catalina.sh", "run"]
