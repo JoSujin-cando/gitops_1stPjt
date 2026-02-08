@@ -41,7 +41,7 @@ spec:
             app: front
                                     
       containers:
-      - image: 890924621133.dkr.ecr.ap-northeast-2.amazonaws.com/pjt1_nginx
+      - image: 890924621133.dkr.ecr.ap-northeast-2.amazonaws.com/pjt1_nginx:b8c6648
         name: nginx
         ports:
         - containerPort: 80
