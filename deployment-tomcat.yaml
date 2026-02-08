@@ -20,8 +20,6 @@ spec:
       #nodeSelector:
       #  role: app
       # ---------------------------------------------------------
-      imagePullSecrets:
-      - name: ecr-secret
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
