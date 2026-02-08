@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: back
+  name: tomcat-deploy
+  namespace: back-ns
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: back
+  template:
+    metadata:
+      labels:
+        app: back
+    spec:
+      # ---------------------------------------------------------
+      # [핵심 변경] role=app 라벨이 있는 노드(worker-2,3,4)에만 배치
+      #nodeSelector:
+      #  role: app
+      # ---------------------------------------------------------
+      imagePullSecrets:
+      - name: ecr-secret
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - back
+              topologyKey: kubernetes.io/hostname
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        nodeTaintsPolicy: Honor        
+        labelSelector:
+          matchLabels:
+            app: back
+      containers:
+      - image: 070238434919.dkr.ecr.ap-northeast-2.amazonaws.com/tomcat:v2.2
+        name: tomcat-container
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_URL
+          value: "jdbc:mysql://10.0.2.40:3306/VEC_PRD_DB?useSSL=false&allowPublicKeyRetrieval=true"
+        - name: DB_USER
+          value: "summer"
+        - name: DB_PASSWORD
+          value: "summer0803$"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        resources:
+         # requests:
+         #   memory: "150Mi"
+         #   cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "600m"
