@@ -15,8 +15,6 @@ spec:
       labels:
         app: front
     spec:
-      imagePullSecrets:
-      - name: ecr-secret
       
       affinity:                                   
         podAntiAffinity:
